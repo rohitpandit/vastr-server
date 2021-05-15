@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../models/user');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.post('/login', async (req, res) => {
 	try {
@@ -25,7 +26,9 @@ router.post('/login', async (req, res) => {
 			return;
 		}
 
-		res.status(200).json({ user });
+		const token = jwt.sign({ _id: user._id }, process.env.JWTSecret);
+
+		res.status(200).json({ token: token });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ message: 'Some internal error occured!' });
@@ -53,7 +56,9 @@ router.post('/signup', async (req, res) => {
 		const newUser = await User({ email, password: hashedPassword });
 		await newUser.save();
 
-		res.status(201).json({ user: newUser });
+		const token = jwt.sign({ _id: newUser._id }, process.env.JWTSecret);
+
+		res.status(200).json({ token: token });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ message: 'Some internal error occured!' });

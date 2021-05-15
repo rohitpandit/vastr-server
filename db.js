@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
 
 mongoose.connect(
 	'mongodb+srv://test:test@cluster0.poymf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
