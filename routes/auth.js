@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 const router = express.Router();
+const bcrypt = require('bcrypt');
 
 router.post('/login', async (req, res) => {
 	try {
@@ -11,19 +12,22 @@ router.post('/login', async (req, res) => {
 			return;
 		}
 
-		const user = await User.findOne({ email });
+		const user = await User.findOne({ email: email });
 		if (!user) {
 			res.status(400).json({ message: 'Wrong email or password' });
 			return;
 		}
 
-		if (user.password !== password) {
+		const passwordCheck = await bcrypt.compare(password, user.password);
+
+		if (!passwordCheck) {
 			res.status(400).json({ message: 'Wrong email or password' });
 			return;
 		}
 
 		res.status(200).json({ user });
 	} catch (error) {
+		console.log(error);
 		res.status(500).json({ message: 'Some internal error occured!' });
 	}
 });
@@ -31,21 +35,27 @@ router.post('/login', async (req, res) => {
 router.post('/signup', async (req, res) => {
 	try {
 		const { email, password } = req.body;
+		console.log(email, password);
 
 		if (!email || !password) {
 			res.status(400).json({ message: 'Enter email and password' });
 			return;
 		}
 
-		const user = await User.findOne({ email });
-		if (user) {
+		let user = await User.findOne({ email: email });
+		if (user !== null) {
 			res.status(400).json({ message: 'Email not available!' });
 			return;
 		}
 
-		const newUser = await User({ email, password });
+		const hashedPassword = await bcrypt.hash(password, 10);
+
+		const newUser = await User({ email, password: hashedPassword });
+		await newUser.save();
+
 		res.status(201).json({ user: newUser });
 	} catch (error) {
+		console.log(error);
 		res.status(500).json({ message: 'Some internal error occured!' });
 	}
 });
