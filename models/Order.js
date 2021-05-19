@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Product = require('./Product');
-const { producSchema } = require('./Product');
+const { productSchema } = require('./Product');
 const User = require('./User');
 
 const orderSchema = mongoose.Schema({
@@ -9,7 +9,7 @@ const orderSchema = mongoose.Schema({
 		ref: User,
 		required: true,
 	},
-	products: [Product],
+	products: [productSchema],
 });
 
 module.exports = mongoose.model('order', orderSchema);

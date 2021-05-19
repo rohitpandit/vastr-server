@@ -3,7 +3,7 @@ const multer = require('multer');
 const imgbbUploader = require('imgbb-uploader');
 
 const router = express.Router();
-const Product = require('../models/Product');
+const { Product } = require('../models/Product');
 const upload = multer({ dest: 'uploads/' });
 
 router.get('/:type?', async (req, res) => {

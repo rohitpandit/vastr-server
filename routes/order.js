@@ -8,10 +8,12 @@ router.get('/', async (req, res) => {
 			res.status(401).json({ message: 'Unauthorized user!' });
 			return;
 		}
-		const order = await Order.findOne({ _id: req.userId });
+		const order = await Order.findOne({ userId: req.userId });
 		if (order === null) {
 			res.status(200).json({ orderList: [] });
 		}
+
+		res.status(200).json({ orderList: order.products });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ message: 'Some internal error occured' });
@@ -25,20 +27,21 @@ router.post('/', async (req, res) => {
 			return;
 		}
 		const { product } = req.body;
-		const order = await Order.findOne({ _id: req.userId });
-		if (order === null) {
+		console.log(product);
+		const order = await Order.findOne({ userId: req.userId });
+		if (order == null) {
 			const newOrder = new Order({
-				user: req.userId,
+				userId: req.userId,
 				products: [product],
 			});
 
 			await newOrder.save();
-			res.status(201).json({ order: newOrder });
+			res.status(201).json({ orderList: newOrder.products });
 		} else {
 			order.products = [...order.products, product];
 			await order.save();
 
-			res.status(200).json({ order: order });
+			res.status(200).json({ orderList: order.products });
 		}
 	} catch (error) {
 		console.log(error);
