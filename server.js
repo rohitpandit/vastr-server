@@ -7,6 +7,7 @@ require('dotenv').config();
 const auth = require('./routes/auth');
 const product = require('./routes/product');
 const user = require('./routes/user');
+const verifyUser = require('./middlewares/verifyUser');
 
 const app = express();
 
@@ -19,7 +20,7 @@ const PORT = process.env.PORT;
 
 app.use('/auth', auth);
 app.use('/product', product);
-app.use('/user', user);
+app.use('/user', verifyUser, user);
 
 app.get('/', (req, res) => {
 	res.send('hi');
