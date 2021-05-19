@@ -9,6 +9,10 @@ const productSchema = mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	thumbUrl: {
+		type: String,
+		required: true,
+	},
 	desc: {
 		type: String,
 		required: true,
