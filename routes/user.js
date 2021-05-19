@@ -9,7 +9,9 @@ router.get('/', async (req, res) => {
 			return;
 		}
 
-		const user = await User.findOne({ _id: req.userId });
+		const user = await User.findOne({ _id: req.userId }).select(
+			'email name address'
+		);
 		res.status(200).json({ user: user });
 	} catch (error) {
 		console.log(error);
