@@ -6,10 +6,21 @@ const router = express.Router();
 const { Product } = require('../models/Product');
 const upload = multer({ dest: 'uploads/' });
 
+router.get('/single/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		const product = await Product.findOne({ _id: id });
+		res.status(200).json({ product: product });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'some internal error occured' });
+	}
+});
+
 router.get('/:type?', async (req, res) => {
 	try {
 		const { type } = req.params;
-		console.log(type);
 
 		let productList;
 
@@ -28,11 +39,10 @@ router.get('/:type?', async (req, res) => {
 router.post('/', upload.single('photo'), async (req, res) => {
 	try {
 		const { desc, quantity, price, category } = req.body;
-		console.log(req.body);
+
 		const photo = req.file;
 
 		const result = await imgbbUploader(process.env.IMGBBSecret, photo.path);
-		console.log(result);
 
 		const newProduct = new Product({
 			url: result.image.url,
@@ -49,19 +59,6 @@ router.post('/', upload.single('photo'), async (req, res) => {
 		res.status(201).json({ message: 'upload successful' });
 	} catch (error) {
 		console.log('Error', error.message);
-		res.status(500).json({ message: 'some internal error occured' });
-	}
-});
-
-router.get('/single/:id', async (req, res) => {
-	try {
-		const { id } = req.params;
-		console.log(id);
-
-		const product = await Product.find({ _id: id });
-		res.status(200).json({ product: product });
-	} catch (error) {
-		console.log(error);
 		res.status(500).json({ message: 'some internal error occured' });
 	}
 });

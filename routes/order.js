@@ -49,4 +49,60 @@ router.post('/', async (req, res) => {
 	}
 });
 
+router.post('/increment/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		if (!req.userId) {
+			res.status(401).json({ message: 'Unauthorized user!' });
+			return;
+		}
+		console.log(product);
+		const order = await Order.findOne({ userId: req.userId });
+		const newProducts = order.products.map((item) => {
+			if (id === item._id) {
+				item.quantity += 1;
+				return item;
+				s;
+			} else {
+				return item;
+			}
+		});
+
+		order.products = newProducts;
+		await order.save();
+		res.status(200).json({ orderList: newProducts });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Some internal error occured' });
+	}
+});
+
+router.post('/decrement/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		if (!req.userId) {
+			res.status(401).json({ message: 'Unauthorized user!' });
+			return;
+		}
+		console.log(product);
+		const order = await Order.findOne({ userId: req.userId });
+		const newProducts = order.products.map((item) => {
+			if (id === item._id) {
+				item.quantity -= 1;
+				return item;
+				s;
+			} else {
+				return item;
+			}
+		});
+
+		order.products = newProducts;
+		await order.save();
+		res.status(200).json({ orderList: newProducts });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Some internal error occured' });
+	}
+});
+
 module.exports = router;
