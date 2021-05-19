@@ -1,5 +1,4 @@
 const express = require('express');
-const axios = require('axios');
 const multer = require('multer');
 const imgbbUploader = require('imgbb-uploader');
 
@@ -7,8 +6,23 @@ const router = express.Router();
 const Product = require('../models/Product');
 const upload = multer({ dest: 'uploads/' });
 
-router.get('/', (req, res) => {
-	res.send('hi');
+router.get('/:type?', async (req, res) => {
+	try {
+		const { type } = req.params;
+		console.log(type);
+
+		let productList;
+
+		if (type) {
+			productList = await Product.find({ category: type });
+		} else {
+			productList = await Product.find();
+		}
+		res.status(200).json({ productList: productList });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'some internal error occured' });
+	}
 });
 
 router.post('/', upload.single('photo'), async (req, res) => {
