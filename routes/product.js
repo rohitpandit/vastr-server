@@ -53,4 +53,17 @@ router.post('/', upload.single('photo'), async (req, res) => {
 	}
 });
 
+router.get('/single/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		console.log(id);
+
+		const product = await Product.find({ _id: id });
+		res.status(200).json({ product: product });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'some internal error occured' });
+	}
+});
+
 module.exports = router;
