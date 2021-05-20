@@ -18,6 +18,59 @@ router.get('/single/:id', async (req, res) => {
 	}
 });
 
+// Increment in product
+router.post('/increment/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		const product = await Product.findOne({ _id: id });
+
+		product.quantity += 1;
+
+		await product.save();
+
+		const productList = await Product.find();
+		res.status(200).json({ productList: productList });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Some internal error occured' });
+	}
+});
+
+// DECREMENT an item in product
+router.post('/decrement/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		const product = await Product.findOne({ _id: id });
+
+		product.quantity -= 1;
+
+		await product.save();
+
+		const productList = await Product.find();
+		res.status(200).json({ productList: productList });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Some internal error occured' });
+	}
+});
+
+// DELETE an product item
+router.delete('/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		await Product.deleteOne({ _id: id });
+
+		const productList = await Product.find();
+		res.status(200).json({ productList: productList });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ message: 'Some internal error occured' });
+	}
+});
+
 router.get('/:type?', async (req, res) => {
 	try {
 		const { type } = req.params;
