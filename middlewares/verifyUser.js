@@ -4,7 +4,7 @@ const verifyUser = (req, res, next) => {
 	try {
 		if (req.headers['authorization']) {
 			const token = req.headers['authorization'].split(' ')[1];
-			const verify = jwt.verify(token, process.env.JWTSecret);
+			const verify = jwt.verify(token, process.env.JWTSECRET);
 			if (verify) {
 				req.userId = verify._id;
 			}

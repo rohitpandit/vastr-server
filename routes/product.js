@@ -95,7 +95,7 @@ router.post('/', upload.single('photo'), async (req, res) => {
 
 		const photo = req.file;
 
-		const result = await imgbbUploader(process.env.IMGBBSecret, photo.path);
+		const result = await imgbbUploader(process.env.IMGBBSECRET, photo.path);
 
 		const newProduct = new Product({
 			url: result.image.url,
