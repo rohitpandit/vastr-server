@@ -4,6 +4,12 @@ const stripe = require('stripe')(
     'sk_test_51JGFlFSFYhBO3CRq6LXypCRWIKHGIDCPqDUxcXTtzOye3oT7MKKOKYCcmdFItABSMciqkndWzV1lHxmRalal1Ln600D9AyUqpp'
 );
 
+const calculateAmount = (orders) => {
+    let res = 0;
+    orders.map((order) => (res += order.price));
+    return res;
+};
+
 app.post('/crate-payment-intent', async (req, res) => {
     const { items } = req.body;
 
