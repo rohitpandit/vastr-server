@@ -11,14 +11,19 @@ const calculateAmount = (orders) => {
 };
 
 router.post('/crate-payment-intent', async (req, res) => {
-    const { items } = req.body;
+    try {
+        const { items } = req.body;
 
-    const paymentIntent = await stripe.paymentIntent.create({
-        amount: calculateAmount(items),
-        currency: 'inr',
-    });
+        const paymentIntent = await stripe.paymentIntent.create({
+            amount: calculateAmount(items),
+            currency: 'inr',
+        });
 
-    res.status(200).json({ clientSecter: paymentIntent.client_secter });
+        res.status(200).json({ clientSecter: paymentIntent.client_secter });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: 'some internal error occured' });
+    }
 });
 
 module.exports = router;
