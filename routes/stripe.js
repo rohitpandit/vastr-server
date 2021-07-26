@@ -14,7 +14,7 @@ router.post('/crate-payment-intent', async (req, res) => {
     try {
         const { items } = req.body;
 
-        const paymentIntent = await stripe.paymentIntent.create({
+        const paymentIntent = await stripe.paymentIntents.create({
             amount: calculateAmount(items),
             currency: 'inr',
         });
