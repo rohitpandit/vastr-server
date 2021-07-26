@@ -6,13 +6,14 @@ const stripe = require('stripe')(
 
 const calculateAmount = (orders) => {
     let res = 0;
-    orders.map((order) => (res += order.price));
+    // orders.map((order) => (res += order.price));
     return res;
 };
 
 router.post('/crate-payment-intent', async (req, res) => {
     try {
         const { items } = req.body;
+        console.log(items);
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount: calculateAmount(items),
