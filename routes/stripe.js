@@ -13,13 +13,13 @@ const calculateAmount = (orders) => {
 router.post('/crate-payment-intent', async (req, res) => {
     try {
         const { items } = req.body;
-        console.log(items);
+        console.log('items', items);
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount: calculateAmount(items),
             currency: 'inr',
         });
-        console.log(paymentIntent.client_secret);
+        console.log('payment secret', paymentIntent.client_secret);
 
         res.status(200).json({ clientSecret: paymentIntent.client_secret });
     } catch (error) {
