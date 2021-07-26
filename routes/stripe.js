@@ -4,19 +4,12 @@ const stripe = require('stripe')(
     'sk_test_51JGFlFSFYhBO3CRq6LXypCRWIKHGIDCPqDUxcXTtzOye3oT7MKKOKYCcmdFItABSMciqkndWzV1lHxmRalal1Ln600D9AyUqpp'
 );
 
-const calculateAmount = (orders) => {
-    let res = 0;
-    orders.map((order) => (res += order.price));
-    return res;
-};
-
 router.post('/crate-payment-intent', async (req, res) => {
     try {
-        const { items } = req.body;
-        console.log('items', items);
+        const { totalPayable } = req.body;
 
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: calculateAmount(items),
+            amount: totalPayable,
             currency: 'inr',
         });
         console.log('payment secret', paymentIntent.client_secret);
