@@ -19,8 +19,9 @@ router.post('/crate-payment-intent', async (req, res) => {
             amount: 1000,
             currency: 'inr',
         });
+        console.log(paymentIntent.client_secret);
 
-        res.status(200).json({ clientSecter: paymentIntent.client_secter });
+        res.status(200).json({ clientSecter: paymentIntent.client_secret });
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ message: 'some internal error occured' });
