@@ -10,7 +10,7 @@ const calculateAmount = (orders) => {
     return res;
 };
 
-app.post('/crate-payment-intent', async (req, res) => {
+router.post('/crate-payment-intent', async (req, res) => {
     const { items } = req.body;
 
     const paymentIntent = await stripe.paymentIntent.create({
