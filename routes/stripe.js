@@ -9,7 +9,7 @@ router.post('/crate-payment-intent', async (req, res) => {
         const { totalPayable } = req.body;
 
         const paymentIntent = await stripe.paymentIntents.create({
-            amount: totalPayable,
+            amount: totalPayable * 100,
             currency: 'inr',
         });
         console.log('payment secret', paymentIntent.client_secret);
