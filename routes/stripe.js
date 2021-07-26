@@ -17,7 +17,7 @@ router.post('/crate-payment-intent', async (req, res) => {
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount: 1000,
-            currency: 'usd',
+            currency: 'inr',
         });
         console.log(paymentIntent.client_secret);
 
