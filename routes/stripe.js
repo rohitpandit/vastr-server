@@ -17,7 +17,15 @@ router.post('/crate-payment-intent', async (req, res) => {
 
         const paymentIntent = await stripe.paymentIntents.create({
             amount: 1000,
-            currency: 'inr',
+            currency: 'usd',
+            name: 'rohit',
+            address: {
+                line1: '1272 Valencia Street',
+                city: 'San Francisco',
+                state: 'CA',
+                country: 'US',
+                postal_code: '94110',
+            },
         });
         console.log(paymentIntent.client_secret);
 
