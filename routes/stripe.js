@@ -18,7 +18,7 @@ router.post('/crate-payment-intent', async (req, res) => {
         const paymentIntent = await stripe.paymentIntents.create({
             amount: 1000,
             currency: 'usd',
-            meta_data: {
+            metadata: {
                 name: 'rohit',
                 address: {
                     line1: '1272 Valencia Street',
