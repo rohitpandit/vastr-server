@@ -27,7 +27,7 @@ app.use('/order', verifyUser, order)
 app.use('/payment', verifyUser, stripe)
 
 app.get('/', (req, res) => {
-  res.send('hi')
+  res.send('server is alive')
 })
 
 app.listen(PORT, () => {
