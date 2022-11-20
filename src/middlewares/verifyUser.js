@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const logger = require('../../lib/logger')
 
 const verifyUser = (req, res, next) => {
   try {
@@ -10,6 +11,7 @@ const verifyUser = (req, res, next) => {
       }
     }
   } catch (error) {
+    logger.error(error)
     res.status(401).json({ message: 'unauthorized user' })
   }
   next()

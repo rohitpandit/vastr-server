@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const logger = require('../lib/logger')
 
 mongoose.connect(
 	'mongodb+srv://test:test@cluster0.poymf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
@@ -8,9 +9,9 @@ mongoose.connect(
 const db = mongoose.connection;
 
 db.on('error', (error) => {
-	console.log(error);
+	logger.error(error);
 });
 
 db.once('open', () => {
-	console.log('Database connected');
+	logger.info('Database connected');
 });

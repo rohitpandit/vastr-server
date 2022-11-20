@@ -1,4 +1,5 @@
 const express = require('express');
+const logger = require('../../lib/logger');
 const router = express.Router();
 const stripe = require('stripe')(
     'sk_test_51JGFlFSFYhBO3CRq6LXypCRWIKHGIDCPqDUxcXTtzOye3oT7MKKOKYCcmdFItABSMciqkndWzV1lHxmRalal1Ln600D9AyUqpp'
@@ -12,11 +13,10 @@ router.post('/crate-payment-intent', async (req, res) => {
             amount: totalPayable * 100,
             currency: 'inr',
         });
-        console.log('payment secret', paymentIntent.client_secret);
 
         res.status(200).json({ clientSecret: paymentIntent.client_secret });
     } catch (error) {
-        console.log(error.message);
+        logger.error(error);
         res.status(500).json({ message: 'some internal error occured' });
     }
 });
