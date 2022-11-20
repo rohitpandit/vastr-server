@@ -18,8 +18,6 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-const PORT = process.env.PORT || 5000
-
 app.use('/auth', auth)
 app.use('/product', product)
 app.use('/user', verifyUser, user)
@@ -30,6 +28,5 @@ app.get('/', (req, res) => {
   res.send('server is alive')
 })
 
-app.listen(PORT, () => {
-  console.log('Sever live at port: ', PORT)
-})
+
+module.exports = app
