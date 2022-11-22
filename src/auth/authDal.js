@@ -8,7 +8,9 @@ const authDal = {
             return user;
         } catch (error) {
             logger.error(error)
-            throw new Error('Internal error occured!', {status: 500})
+            let err  = new Error('Internal error occured!')
+            err.status = 500;
+            throw err
         }
     },
 
@@ -18,7 +20,9 @@ const authDal = {
             return user;
         } catch (error) {
             logger.error(error)
-            throw new Error('Internal error occured!', {status: 500})
+            let err  = new Error('Internal error occured!')
+            err.status = 500;
+            throw err
         }
     }
 }
