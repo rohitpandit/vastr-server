@@ -3,11 +3,16 @@ const {combine, timestamp, prettyPrint, splat} = format;
 
 const logger = new createLogger({
     format: combine(
-        splat(),
         timestamp(),
         prettyPrint()
     ),
     transports : [new transports.Console()]
 })
+
+logger.stream = {
+    write: (message, encoding)=>{
+        logger.info(message)
+    }
+}
 
 module.exports = logger;

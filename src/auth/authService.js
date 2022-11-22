@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const logger = require('../../lib/logger');
+const logger = require('../lib/logger');
 const authDal = require('./authDal')
 
 

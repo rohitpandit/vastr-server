@@ -1,4 +1,4 @@
-const logger = require('../../lib/logger');
+const logger = require('../lib/logger');
 const User = require('../models/User')
 
 const authDal = {
@@ -7,7 +7,7 @@ const authDal = {
             const user = await User.findOne({ email: email })
             return user;
         } catch (error) {
-            logger.error(error)
+            logger.error('',error)
             let err  = new Error('Internal error occured!')
             err.status = 500;
             throw err
@@ -19,7 +19,7 @@ const authDal = {
             const user = await User.create({ email, password });
             return user;
         } catch (error) {
-            logger.error(error)
+            logger.error('',error)
             let err  = new Error('Internal error occured!')
             err.status = 500;
             throw err

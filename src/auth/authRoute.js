@@ -1,4 +1,4 @@
-const logger = require('../../lib/logger')
+const logger = require('../lib/logger')
 const authService = require('./authService')
 
 const authRoute = (app) =>{
@@ -13,7 +13,7 @@ const authRoute = (app) =>{
             let {token, admin} = await authService.login(email, password);
             return res.status(200).json({ token: token, admin: admin })
         } catch (error) {          
-            logger.error(error)
+            logger.error('',error)
             return res.status(error.status).json({ message: error.message })
         }
     })
@@ -30,7 +30,8 @@ const authRoute = (app) =>{
             let {token} = await authService.signup(email, password);
             return res.status(200).json({ token: token })
         } catch (error) {
-            logger.error(error);
+            console.log('error:', error)
+            logger.error('',error);
             return res.status(error.status).json({message: error.message})
         }
     })
