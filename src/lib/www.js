@@ -1,5 +1,5 @@
 const http = require('http');
-const app = require('../src/server.js');
+const app = require('../server.js');
 const logger = require('./logger.js');
 
 

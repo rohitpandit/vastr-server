@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
-const logger = require('../lib/logger')
+const logger = require('./lib/logger')
 require('./db')
 require('dotenv').config()
 
