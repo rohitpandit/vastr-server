@@ -1,15 +1,13 @@
 const Order = require('../models/Order')
+const connection = require('../db')
 
 const orderDal = {
     getOrderByUser : async (userId) =>{
         try {
-            const orderQuery = `select * from public.user where id = ${userId} `
-            const order = await Order.findOne({ userId: userId });
-            if (order === null) {
-                return []
-            }
-
-            return order.products;    
+            const orderQuery = `select p.* from product_order po inner join project p 
+            on po.product_id = p.id where user_id = ${userId} `
+            const order = await connection.query(orderQuery);
+            return order.rows; 
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -19,22 +17,14 @@ const orderDal = {
     },
     incrementOrderByOne: async (userId, productId) =>{
         try {
-            const order = await Order.findOne({ userId: userId });
-            const newProducts = order.products.map((item) => {
-                if (productId == item._id) {
-                    item.quantity += 1;
+            const orderIncrementQuery = ` update product_order set quantity = quantity + 1 
+            where user_id = '${user_id}' and product_id = '${productId}' ` 
+            await connection.query(orderIncrementQuery);
 
-                    return item;
-                } else {
-                    return item;
-                }
-            });
-
-            logger.info(newProducts);
-
-            order.products = newProducts;
-            await order.save();
-            return newProducts;
+            const orderQuery = `select p.* from product_order po inner join project p 
+            on po.product_id = p.id where user_id = ${userId} `
+            const order = await connection.query(orderQuery);
+            return order.rows;
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -44,20 +34,14 @@ const orderDal = {
     },
     decrementOrderByOne: async (userId, productId) =>{
         try {
-            const order = await Order.findOne({ userId: userId });
-            const newProducts = order.products.map((item) => {
-                if (productId == item._id) {
-                    item.quantity -= 1;
-    
-                    return item;
-                } else {
-                    return item;
-                }
-            });
-    
-            order.products = newProducts;
-            await order.save();
-            return newProducts;
+            const orderDecrementQuery = ` update product_order set quantity = quantity - 1 
+            where user_id = '${user_id}' and product_id = '${productId}' ` 
+            await connection.query(orderDecrementQuery);
+
+            const orderQuery = `select p.* from product_order po inner join project p 
+            on po.product_id = p.id where user_id = ${userId} `
+            const order = await connection.query(orderQuery);
+            return order.rows;
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -65,18 +49,15 @@ const orderDal = {
             throw err 
         }
     },
-    deleteProductById: async (userId, productId) =>{
+    deleteOrderByProductId: async (userId, productId) =>{
         try {
-            const order = await Order.findOne({ userId: userId });
-            const newProducts = order.products.filter((item) => {
-                if (productId != item._id) {
-                    return item;
-                }
-            });
-    
-            order.products = newProducts;
-            await order.save();
-            return newProducts;
+            const deleteOderQuery = `delete from product_order where user_id = '${userId}' and product_id = '${productId}' `
+            await connection.query(deleteOderQuery);
+
+            const orderQuery = `select p.* from product_order po inner join project p 
+            on po.product_id = p.id where user_id = ${userId} `
+            const order = await connection.query(orderQuery);
+            return order.rows;
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -84,22 +65,16 @@ const orderDal = {
             throw err 
         }
     },
-    addProducts: async (userId, product) =>{
+    addProducts: async (userId, productId) =>{
         try {
-            const order = await Order.findOne({ userId: userId });
-            if (order == null) {
-                const newOrder = new Order({
-                    userId: userId,
-                    products: [product],
-                });
-    
-                await newOrder.save();
-                return newOrder.products 
-            } else {
-                order.products = [...order.products, product];
-                await order.save();
-                return order.products;
-            }
+            const productAddQuery = ` insert into product_order (user_id, product_id, quantity) 
+            values ('${userId}', '${productId}', 1)`;
+            await connection.query(productAddQuery);
+
+            const orderQuery = `select p.* from product_order po inner join project p 
+            on po.product_id = p.id where user_id = ${userId} `
+            const order = await connection.query(orderQuery);
+            return order.rows;
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -109,7 +84,8 @@ const orderDal = {
     },
     clearOrder: async (userId)=>{
         try {
-            await Order.findOneAndDelete({ userId: userId });
+            let deleteOrders = `delete from product_order where user_id = '${userId}' `
+            await connection.query(deleteOrders);
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')

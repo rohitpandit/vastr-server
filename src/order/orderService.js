@@ -11,7 +11,7 @@ const orderService = {
         return orderDal.decrementOrderByOne(userId, productId)
     },
     deleteItem: (userId, productId) =>{
-        return orderDal.deleteProductById(userId, productId)
+        return orderDal.deleteOrderByProductId(userId, productId)
     },
     addProducts: (userId, product) =>{
         return orderDal.addProducts(userId, product)

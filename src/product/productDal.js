@@ -1,10 +1,12 @@
 const Product = require('../models/Product')
+const connection = require('../db')
 
 const productDal = {
     findById: async (id)=>{
         try {
-            let productQuery = '';
-            return product;
+            let productQuery = `select * from product where id = '${id}' `;
+            let product = await connection.query(productQuery);
+            return product.res[0];
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -14,12 +16,12 @@ const productDal = {
     },
     incrementProductById : async (id) =>{
         try {
-            const product = ''
-            product.quantity += 1;
-            await product.save();
+            const productIncrementQuery = ` update product set quantity = quantity + 1 where id '${id}' `;
+            await connection.query(productIncrementQuery);
 
-            const productList = await Product.find();
-            return productList;
+            let productListQuery = `select * from product `;
+            let productList = await connection.query(productListQuery);
+            return productList.rows;
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -29,12 +31,12 @@ const productDal = {
     },
     decrementProductById : async (id) =>{
         try {
-            const product = await Product.findOne({ _id: id });
-            product.quantity -= 1;
-            await product.save();
+            const productDecrementQuery = ` update product set quantity = quantity - 1 where id '${id}' `;
+            await connection.query(productDecrementQuery);
 
-            const productList = await Product.find();
-            return productList;
+            let productListQuery = `select * from product `;
+            let productList = await connection.query(productListQuery);
+            return productList.rows;
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -44,9 +46,12 @@ const productDal = {
     },
     deleteProductById : async (id) =>{
         try {
-            await Product.deleteOne({ _id: id });
-            const productList = await Product.find();
-            return productList
+            const deleteProductQuery = `delete from product where id = '${id}' `;
+            await connection.query(deleteProductQuery)
+
+            let productListQuery = `select * from product `;
+            let productList = await connection.query(productListQuery);
+            return productList.rows;
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -56,8 +61,9 @@ const productDal = {
     },
     getProductsByCategory : async (category)=>{
         try {
-            const productList = await Product.find({ category: type });
-            return productList
+            const productListQuery = `select * from product where category = '${category}' `;
+            let productList = await connection.query(productListQuery);
+            return productList.rows;
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -67,8 +73,10 @@ const productDal = {
     },
     getAllProducts : async () =>{
         try {
-            const productList = await Product.find();
-            return productList
+
+           let productListQuery = `select * from product `;
+            let productList = await connection.query(productListQuery);
+            return productList.rows;
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -78,16 +86,11 @@ const productDal = {
     },
     addNewProduct : async (desc, quantity, price, category, result)=>{
         try {
-            const newProduct = new Product({
-                url: result.image.url,
-                thumbUrl: result.thumb.url,
-                desc: desc,
-                price: price,
-                quantity: quantity,
-                category: category,
-            });
 
-            await newProduct.save();
+            const insertProductQuery = ` insert into product (url, thumb_url, description, price, quantiy, category)
+             values (result.image.url, result,thumb.url,desc,price, quantity, category) `
+
+            await connection.query(insertProductQuery);
             return;
         } catch (error) {
             logger.error('',error)
