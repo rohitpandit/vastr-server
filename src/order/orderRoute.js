@@ -73,7 +73,7 @@ const orderRoute = (app)=>{
                 return;
             }
             const { product } = req.body;
-            const productList = await orderService.addProducts(req.userId, product)
+            const productList = await orderService.addProducts(req.userId, product.productId)
             res.status(200).json({ orderList: productList });
         } catch (error) {
             logger.error(error);

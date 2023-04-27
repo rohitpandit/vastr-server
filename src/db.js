@@ -1,17 +1,12 @@
-const mongoose = require('mongoose');
-const logger = require('./lib/logger')
+const {Pool} = require('pg');
 
-mongoose.connect(
-	'mongodb+srv://test:test@cluster0.poymf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-	{ useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true }
-);
 
-const db = mongoose.connection;
+const pool = new Pool({
+    user: 'postgres',
+    host: 'database-1.cejx4qykcnpi.us-east-1.rds.amazonaws.com',
+    database: 'database-1',
+    password: 'uA1M5Vd93pvSyRuRCSNU',
+    port: '5432'
+})
 
-db.on('error', (error) => {
-	logger.error(error);
-});
-
-db.once('open', () => {
-	logger.info('Database connected');
-});
+module.exports = pool;
