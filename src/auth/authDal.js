@@ -1,11 +1,12 @@
 const logger = require('../lib/logger');
-const User = require('../models/User')
+const connection = require('../db');
 
 const authDal = {
     getUser: async (email)=>{
         try {
-            const user = await User.findOne({ email: email })
-            return user;
+            const userQuery = `select * from public.user where email = '${email}' `;
+            const user = await connection.query(userQuery);
+            return user.rows[0];
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -16,7 +17,8 @@ const authDal = {
 
     createUser: async (email, password) =>{
         try {
-            const user = await User.create({ email, password });
+            const userQuery = `insert into public.user (email, password) values ('${email}', '${password}') `;
+            const user = await connection.query(userQuery);
             return user;
         } catch (error) {
             logger.error('',error)
