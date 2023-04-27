@@ -1,13 +1,13 @@
 const User = require('../models/User')
 const logger = require('../lib/logger')
+const connection = require('../db')
 
 const userDal = {
     getUserById:async (userId)=>{
         try {
-            let user = await User.findOne({ _id: userId }).select(
-                'email name address admin'
-            );
-            return user;
+            let userQuery = `select email name address admin from public.user where id = ${userId} `;
+            let user = await connection.query(userQuery);
+            return user.res[0];
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')
@@ -18,19 +18,10 @@ const userDal = {
 
     updateProfile : async (userId, name, address)=>{
         try {
-            const user = await User.findOne({ _id: userId }).select(
-                'email name address admin'
-            );
-    
-            if (address) {
-                user.address = address;
-            }
-            if (name) {
-                user.name = name;
-            }
-    
-            await user.save();
-            return user;
+            let updateUserQuery = `update public.user set address = '${address}'
+            , name = '${name}' where id = '${userId}' returning name, email, address, admin `;
+            let user = await connection.query(updateUserQuery);
+            return user.rows[0];
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')

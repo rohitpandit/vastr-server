@@ -3,7 +3,7 @@ const Product = require('../models/Product')
 const productDal = {
     findById: async (id)=>{
         try {
-            let product = await Product.findOne({id:id});
+            let productQuery = '';
             return product;
         } catch (error) {
             logger.error('',error)
@@ -14,7 +14,7 @@ const productDal = {
     },
     incrementProductById : async (id) =>{
         try {
-            const product = await Product.findOne({ _id: id });
+            const product = ''
             product.quantity += 1;
             await product.save();
 

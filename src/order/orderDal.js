@@ -3,6 +3,7 @@ const Order = require('../models/Order')
 const orderDal = {
     getOrderByUser : async (userId) =>{
         try {
+            const orderQuery = `select * from public.user where id = ${userId} `
             const order = await Order.findOne({ userId: userId });
             if (order === null) {
                 return []
