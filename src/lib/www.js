@@ -3,7 +3,7 @@ const app = require('../server.js');
 const logger = require('./logger.js');
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 httpServer = http.createServer(app);
 httpServer.listen(PORT);
