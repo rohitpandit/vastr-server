@@ -62,6 +62,7 @@ const productDal = {
     getProductsByCategory : async (category)=>{
         try {
             const productListQuery = `select * from product where category = '${category}' `;
+            console.log("productListQuery: ", productListQuery)
             let productList = await connection.query(productListQuery);
             return productList.rows;
         } catch (error) {

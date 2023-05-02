@@ -20,7 +20,8 @@ const authService = {
             throw err;
         }
 
-        const token = jwt.sign({ _id: user._id }, 'jwtSecret')
+        const token = jwt.sign({ _id: user.id }, 'jwtSecret')
+        console.log("login token:  ", token)
         return {token: token, admin: user.admin};
     },
 
@@ -34,7 +35,7 @@ const authService = {
             throw err;
         }
         let newUser = await authDal.createUser(email, hashedPassword);
-        const token = jwt.sign({ _id: newUser._id }, 'jwtSecret')
+        const token = jwt.sign({ _id: newUser.id }, 'jwtSecret')
         return {token: token};
     }
 }

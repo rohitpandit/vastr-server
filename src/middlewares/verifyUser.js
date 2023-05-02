@@ -3,9 +3,14 @@ const logger = require('../lib/logger')
 
 const verifyUser = (req, res, next) => {
   try {
+    console.log('-----: ', req.headers)
     if (req.headers['authorization']) {
-      const token = req.headers['authorization'].split(' ')[1]
+      const token = req.headers['authorization']
+      console.log("token: ", token)
+      logger.info("token: ", token)
       const verify = jwt.verify(token, 'jwtSecret')
+      logger.info("verify ", verify)
+      console.log('verify: ', verify)
       if (verify) {
         req.userId = verify._id
       }

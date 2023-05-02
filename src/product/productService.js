@@ -15,6 +15,7 @@ const productService ={
         return productDal.deleteProductById(id);
     },
     getProducts : (type)=>{
+        console.log('type: ', type)
         if (type) {
             return productDal.getProductsByCategory(type); 
         }

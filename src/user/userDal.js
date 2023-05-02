@@ -5,9 +5,10 @@ const connection = require('../db')
 const userDal = {
     getUserById:async (userId)=>{
         try {
-            let userQuery = `select email name address admin from public.user where id = ${userId} `;
+            let userQuery = `select email, name, address, admin from public.user where id = ${userId} `;
+            console.log("userQuery: ", userQuery)
             let user = await connection.query(userQuery);
-            return user.res[0];
+            return user.rows[0];
         } catch (error) {
             logger.error('',error)
             let err  = new Error('Internal error occured!')

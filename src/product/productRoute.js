@@ -4,7 +4,7 @@ const upload = multer({ dest: 'uploads/' });
 
 const productRoute = (app)=>{
 
-    app.get('/single/:id', async (req, res) => {
+    app.get('/product/single/:id', async (req, res) => {
         try {
             const { id } = req.params;
     
@@ -17,7 +17,7 @@ const productRoute = (app)=>{
     });
     
     // Increment in product
-    app.post('/increment/:id', async (req, res) => {
+    app.post('/product/increment/:id', async (req, res) => {
         try {
             const { id } = req.params;
     
@@ -30,7 +30,7 @@ const productRoute = (app)=>{
     });
     
     // DECREMENT an item in product
-    app.post('/decrement/:id', async (req, res) => {
+    app.post('/product/decrement/:id', async (req, res) => {
         try {
             const { id } = req.params;
             const productList = await productService.decrementProduct(id);
@@ -55,7 +55,8 @@ const productRoute = (app)=>{
         }
     });
     
-    app.get('/:type?', async (req, res) => {
+    app.get('/product/:type?', async (req, res) => {
+        console.log("inside this section: ")
         try {
             const { type } = req.params;
             let productList = await productService.getProducts(type);    
@@ -67,7 +68,7 @@ const productRoute = (app)=>{
         }
     });
     
-    app.post('/', upload.single('photo'), async (req, res) => {
+    app.post('/product/', upload.single('photo'), async (req, res) => {
         try {
             const { desc, quantity, price, category } = req.body;
     

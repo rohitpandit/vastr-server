@@ -27,7 +27,7 @@ router.post('/login', async (req, res) => {
       return
     }
 
-    const token = jwt.sign({ _id: user._id }, 'jwtSecret')
+    const token = jwt.sign({ _id: user.id }, 'jwtSecret')
 
     res.status(200).json({ token: token, admin: user.admin })
   } catch (error) {
@@ -56,7 +56,7 @@ router.post('/signup', async (req, res) => {
     const newUser = await User({ email, password: hashedPassword })
     await newUser.save()
 
-    const token = jwt.sign({ _id: newUser._id }, 'jwtSecret')
+    const token = jwt.sign({ _id: newUser.id }, 'jwtSecret')
 
     res.status(200).json({ token: token })
   } catch (error) {
